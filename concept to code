@@ -1,0 +1,93 @@
+
+        // --- THEME TOGGLE ---
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.innerHTML = '☀️';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggleBtn.innerHTML = isDark ? '☀️' : '🌙';
+        });
+
+        // --- OPTION TOGGLE (SWITCH PRICES & FIELDS) ---
+        function toggleOption(type) {
+            const auditOptions = document.querySelectorAll('.audit-price');
+            const devOptions = document.querySelectorAll('.dev-price');
+            const pkgSelect = document.getElementById('package');
+
+            if (type === 'quick') {
+                document.getElementById('quick-fields').style.display = 'block';
+                document.getElementById('custom-fields').style.display = 'none';
+                
+                auditOptions.forEach(opt => opt.style.display = 'block');
+                devOptions.forEach(opt => opt.style.display = 'none');
+                pkgSelect.value = "25";
+            } else {
+                document.getElementById('quick-fields').style.display = 'none';
+                document.getElementById('custom-fields').style.display = 'block';
+                
+                auditOptions.forEach(opt => opt.style.display = 'none');
+                devOptions.forEach(opt => opt.style.display = 'block');
+                pkgSelect.value = "200";
+            }
+        }
+
+        // --- QUICK FILL EMAIL ---
+        function quickFill(suffix) {
+            const emailInput = document.getElementById('userEmail');
+            let val = emailInput.value.trim();
+            if (suffix.startsWith('@') && val.includes('@')) {
+                if (val.endsWith('@')) emailInput.value += suffix.substring(1);
+            } else { emailInput.value += suffix; }
+            emailInput.focus();
+        }
+
+        // --- FORM FLOW ---
+        function expandForm() {
+            const email = document.getElementById('userEmail').value;
+            const isQuick = document.querySelector('input[name="auditType"]:checked').value === 'quick';
+            
+            let isValid = false;
+            if (isQuick) {
+                isValid = document.getElementById('siteUrl').value && email;
+            } else {
+                isValid = document.getElementById('personName').value && document.getElementById('webDesc').value && email;
+            }
+
+            if (isValid) {
+                document.getElementById('step-2').style.display = 'block';
+                document.getElementById('step-1').style.opacity = '0.4';
+                document.getElementById('step-1').style.pointerEvents = 'none';
+                document.getElementById('step-2').scrollIntoView({ behavior: 'smooth' });
+            } else { 
+                alert("Please complete the required fields."); 
+            }
+        }
+
+        // --- PAYMENTS ---
+        function payWithPayPal() {
+            const price = document.getElementById('package').value;
+            window.open(`https://www.paypal.me/talentedtechguy/${price}`, '_blank');
+        }
+
+        function payWithRazorpay() {
+            const priceUSD = parseFloat(document.getElementById('package').value);
+            const amountPaise = Math.round(priceUSD * 83 * 100); 
+
+            const options = {
+                "key": "YOUR_RAZORPAY_KEY_HERE", 
+                "amount": amountPaise,
+                "currency": "INR",
+                "name": "SpeedAudit",
+                "handler": function (response){ alert("Payment Success! ID: " + response.razorpay_payment_id); },
+                "prefill": { "email": document.getElementById('userEmail').value },
+                "theme": { "color": "#90b8f8" }
+            };
+            try { new Razorpay(options).open(); } catch(e) { alert("Razorpay failed. Check console."); }
+        }
