@@ -1,1 +1,114 @@
-(content of the original file)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept to Code | Web Performance & Development</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="concept to code.css">
+    
+    <script src="concept to code sdc.js"></script> 
+    <script src="concept to code.js" defer></script>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Concept<span>toCode</span></div>
+        <div class="theme">
+            <button id="theme-toggle" class="theme-toggle">🌙</button>
+        </div>
+    </nav>
+
+    <section class="form-container">
+        <form id="mainForm" action="https://formspree.io/f/mojyeyrp" method="POST">
+            
+            <input type="hidden" name="_subject" value="New Project Inquiry - ConcepttoCode">
+            <input type="hidden" name="Calculated Final Price" id="formspreeTotal" value="">
+
+
+            <div id="step-1">
+    <h3 style="margin-bottom: 15px;">Step 1: Project Details</h3>
+    
+    <div class="option-toggle">
+        <label class="toggle-btn">
+            <input type="radio" name="Project Scope" value="Optimize Existing" checked onclick="toggleOption('quick')"> 
+            <span>Optimize Existing</span>
+        </label>
+        <label class="toggle-btn">
+            <input type="radio" name="Project Scope" value="Build New" onclick="toggleOption('custom')"> 
+            <span>Build New</span>
+        </label>
+    </div> 
+
+    <div id="quick-fields">
+        <div class="input-group">
+            <input type="url" id="siteUrl" name="Current Website URL" placeholder=" " class="input-field">
+            <label>Current Website URL</label>
+        </div>
+    </div>
+
+    <div id="custom-fields" class="hidden">
+        <div class="input-group">
+            <input type="text" id="personName" name="Client Name" placeholder=" " class="input-field">
+            <label>Your Name</label>
+        </div>
+        <div class="input-group">
+            <textarea id="webDesc" name="Project Goals" placeholder=" " rows="4" class="input-field"></textarea>
+            <label>Project Goals</label>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <input type="email" id="userEmail" name="Client Email" placeholder=" " class="input-field" required>
+        <label>Email Address</label>
+    </div>
+    
+    <div class="chip-container">
+        <button type="button" class="chip" onclick="quickFill('@gmail.com')">@gmail.com</button>
+        <button type="button" class="chip" onclick="quickFill('@')">@</button>
+        <button type="button" class="chip" onclick="quickFill('.com')">.com</button>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="promoCode" name="Promo Code Applied" placeholder=" " class="input-field">
+        <label>Discount Code (Optional)</label>
+    </div>
+
+    <select id="package" name="Selected Package" class="input-field" style="margin-bottom: 20px;" onchange="updatePackageDescription()">
+        <optgroup label="Optimize Existing Sites">
+            <option value="25" class="audit-price" data-desc="HTML and CSS: 70% to 85% improvement! 100% redesign.">HTML & CSS Optimization ($25)</option>
+            <option value="99" class="audit-price" data-desc="WordPress: 60%-70% redesign based on existing themes.">WordPress Optimization ($99)</option>
+        </optgroup>
+        <optgroup label="Build from Scratch">
+            <option value="200" class="dev-price hidden" hidden disabled data-desc="Custom Landing Page built from scratch with HTML, CSS, and JS.">Landing Page Build ($200)</option>
+            <option value="500" class="dev-price hidden" hidden disabled data-desc="Multi-page business site built exactly to your brand.">Business Website ($500)</option>
+            <option value="1000" class="dev-price hidden" hidden disabled data-desc="Advanced enterprise solutions and major structural overhauls.">Enterprise Solution ($1,000)</option>
+        </optgroup>
+    </select>
+
+    <div id="package-desc" class="package-description hidden"></div>
+
+    <div class="option-toggle" style="margin-top: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.03);">
+        <label class="toggle-btn">
+            <input type="radio" name="currency" value="USD" checked>
+            <span>$ USD (PayPal)</span>
+        </label>
+        <label class="toggle-btn inr" aria-disabled="true">
+            <input type="radio" name="currency" value="INR">
+            <span>₹ INR (UPI)</span>
+        </label>
+    </div>
+    
+    <button type="button" class="btn-main" onclick="expandForm()">Continue to Checkout</button>
+</div>
+
+            <div id="step-2" class="hidden">
+                <div id="payment-area"></div>
+                <button type="button" class="btn-cancel" onclick="cancelCheckout()">✖ Edit Details</button>
+            </div>
+        </form>
+    </section>
+
+</body>
+</html>
