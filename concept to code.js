@@ -34,7 +34,6 @@ function updatePrices() {
     const descDiv = document.getElementById('package-desc');
     const promo = promoInput.value.trim().toUpperCase();
     
-    // Ensure config exists from sdc.js
     const config = window.DISCOUNT_CONFIG || {};
     let discountFound = false;
 
@@ -44,42 +43,31 @@ function updatePrices() {
 
         let finalPrice = basePrice;
 
-        // Apply Discount Logic
-        if (config.free && promo === config.free.code) {
-            finalPrice = 0;
-            discountFound = true;
-        } else if (config.kash && promo === config.kash.code) {
-            finalPrice = Math.round(basePrice * (1 - config.kash.rate));
-            discountFound = true;
-        } else if (config.quick && promo === config.quick.code) {
-            finalPrice = Math.round(basePrice * (1 - config.quick.rate));
-            discountFound = true;
-        } else if (config.special && promo === config.special.code) {
-            finalPrice = config.special.target;
-            discountFound = true;
+        // Dynamic Discount Check (Checks all codes in sdc.js including IRAN786)
+        for (let key in config) {
+            if (promo === config[key].code) {
+                if (config[key].rate) {
+                    finalPrice = Math.round(basePrice * (1 - config[key].rate));
+                } else if (config[key].target) {
+                    finalPrice = config[key].target;
+                }
+                discountFound = true;
+                break;
+            }
         }
 
-        // --- FIXED NAMES TO PREVENT OVERLAP ---
-        let originalName = "";
-        const val = opt.value;
+        let originalName = opt.classList.contains('audit-price') ? 
+            (opt.value === "25" ? "HTML & CSS Optimization" : "WordPress Optimization") :
+            (opt.value === "200" ? "Landing Page Build" : opt.value === "500" ? "Business Website" : "Enterprise Solution");
 
-        if (opt.classList.contains('audit-price')) {
-            originalName = (val === "25") ? "HTML & CSS Optimization" : "WordPress Optimization";
-        } else {
-            if (val === "200") originalName = "Landing Page Build";
-            else if (val === "500") originalName = "Business Website";
-            else if (val === "1000") originalName = "Enterprise Solution";
-        }
-
-        // Update display: $Price / ₹Rupees
-        opt.text = `${originalName} ($${finalPrice} / ₹${Math.round(finalPrice * 83)})`;
+        // Simple display (keeps dropdown clean)
+        opt.text = `${originalName} ($${finalPrice})`;
         
         if (opt.selected) {
             document.getElementById('formspreeTotal').value = `$${finalPrice}`;
         }
     }
 
-    // Success Message Feedback
     if (discountFound && promo !== "") {
         descDiv.innerHTML = `<span style="color: #4ade80; font-weight: bold;">✅ Discount Applied!</span>`;
         descDiv.classList.remove('hidden');
@@ -87,15 +75,6 @@ function updatePrices() {
         updatePackageDescription(); 
     }
 }
-
-// --- EVENT LISTENERS ---
-document.addEventListener('DOMContentLoaded', () => {
-    const promoElement = document.getElementById('promoCode');
-    const pkgElement = document.getElementById('package');
-
-    if(promoElement) promoElement.addEventListener('input', updatePrices);
-    if(pkgElement) pkgElement.addEventListener('change', updatePrices);
-});
 
 // --- OPTION TOGGLE (Quick Audit vs Build) ---
 function toggleOption(type) {
@@ -116,19 +95,28 @@ function toggleOption(type) {
 // --- FORM FLOW & CHECKOUT ---
 function expandForm() {
     const email = document.getElementById('userEmail').value;
-    if (!email) { alert("Email is required"); return; }
+    const urlInput = document.getElementById('siteUrl');
+    const currency = document.querySelector('input[name="currency"]:checked').value;
     
+    if (!email) { alert("Email is required"); return; }
+
+    const isOptimize = document.querySelector('input[name="Project Scope"]:checked').value === 'Optimize Existing';
+    if (isOptimize && (!urlInput || !urlInput.value.trim())) {
+        alert("Please provide the Website URL you want optimized.");
+        if(urlInput) urlInput.focus();
+        return;
+    }
+
     updatePrices(); 
     
     const pkgSelect = document.getElementById('package');
     const selectedText = pkgSelect.options[pkgSelect.selectedIndex].text;
     const priceMatch = selectedText.match(/\$(\d+)/);
-    const price = priceMatch ? priceMatch[1] : "0";
+    const priceUSD = priceMatch ? parseInt(priceMatch[1]) : 0;
     
     const paymentArea = document.getElementById('payment-area');
     
-    // Check if the price is 0 for free codes
-    if (price === "0") {
+    if (priceUSD === 0) {
         paymentArea.innerHTML = `
             <div class="checkout-summary">
                 <h4>Order Summary</h4>
@@ -136,15 +124,27 @@ function expandForm() {
             </div>
             <button type="submit" class="btn-main" style="background: #4ade80 !important; color: white;">Complete Free Order</button>
         `;
-    } else {
+    } else if (currency === 'USD') {
         paymentArea.innerHTML = `
             <div class="checkout-summary">
-                <h4>Order Summary</h4>
-                <p style="font-weight: 600; color: var(--primary);">${selectedText}</p>
+                <h4>PayPal Checkout</h4>
+                <p style="font-weight: 600;">${selectedText}</p>
             </div>
             <button type="button" class="btn-paypal-branded" onclick="payWithPayPal()">
                 <span class="paypal-text">Pay with <span>Pay</span><span>Pal</span></span>
             </button>
+        `;
+    } else {
+        const priceINR = priceUSD * 83;
+        paymentArea.innerHTML = `
+            <div class="checkout-summary">
+                <h4>UPI Payment (India)</h4>
+                <p style="font-size: 1.2rem; font-weight: 800;">₹${priceINR.toLocaleString('en-IN')}</p>
+                <h2 style="background: var(--accent); padding: 10px; border-radius: 5px; font-size: 1.1rem; margin-top: 10px;">
+                    UPI ID: talentedtechguy@upi
+                </h2>
+            </div>
+            <button type="submit" class="btn-main">Submit Project & Pay via UPI</button>
         `;
     }
 
@@ -157,11 +157,8 @@ function expandForm() {
 function payWithPayPal() {
     const pkgSelect = document.getElementById('package');
     const selectedText = pkgSelect.options[pkgSelect.selectedIndex].text;
-    // Extract numerical price only
-    const cleanText = selectedText.replace(/,/g, '');
-    const priceMatch = cleanText.match(/\$(\d+)/);
+    const priceMatch = selectedText.match(/\$(\d+)/);
     const price = priceMatch ? priceMatch[1] : pkgSelect.value;
-    
     window.open(`https://www.paypal.me/talentedtechguy/${price}`, '_blank');
 }
 
@@ -182,3 +179,11 @@ function quickFill(suffix) {
         emailInput.dispatchEvent(new Event('input'));
     }
 }
+
+// Initialize Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const promoElement = document.getElementById('promoCode');
+    const pkgElement = document.getElementById('package');
+    if(promoElement) promoElement.addEventListener('input', updatePrices);
+    if(pkgElement) pkgElement.addEventListener('change', updatePrices);
+});
