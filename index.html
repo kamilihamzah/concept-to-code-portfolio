@@ -1,114 +1,931 @@
+Concept to Code
+
+Here's your complete, production-ready website. Copy the code below into an index.html file and add your tab-icon.png asset in the same directory.
+
+``html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concept to Code | Web Performance & Development</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    
-    <script src="sdc.js"></script> 
-    <script src="script.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concept to Code | Web Optimization & Custom Development</title>
+  <meta name="description" content="Transform your web presence with professional optimization services or custom-built solutions. Fixed pricing for speed & redesign, or get a tailored quote for your unique project.">
+  
+  <!-- Canonical & OG Tags -->
+  <link rel="canonical" href="https://ctocweb.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ctocweb.com/">
+  <meta property="og:title" content="Concept to Code | Web Optimization & Custom Development">
+  <meta property="og:description" content="Professional web optimization and custom development services. Fixed pricing or custom quotes available.">
+  <meta property="og:image" content="https://ctocweb.com/tab-icon.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="tab-icon.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4f46e5;
+      --bg: #ffffff;
+      --bg-secondary: #f8fafc;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --error: #ef4444;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+      --transition: 0.2s ease;
+    }
+
+    [data-theme="dark"] {
+      --primary: #818cf8;
+      --primary-light: #a5b4fc;
+      --primary-dark: #6366f1;
+      --bg: #0f172a;
+      --bg-secondary: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    }
+
+     {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'IBM Plex Sans Arabic', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    / Theme Toggle /
+    .theme-toggle {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .theme-toggle svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--text);
+      transition: fill var(--transition);
+    }
+
+    .sun-icon { display: none; }
+    .moon-icon { display: block; }
+    [data-theme="dark"] .sun-icon { display: block; }
+    [data-theme="dark"] .moon-icon { display: none; }
+
+    / Layout /
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    / Glow Effect /
+    .effect {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .effect span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+      opacity: 0.08;
+      filter: blur(80px);
+    }
+
+    [data-theme="dark"] .effect span {
+      opacity: 0.15;
+    }
+
+    / Header /
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      color: var(--text-muted);
+      font-size: 1.125rem;
+    }
+
+    / Form Container /
+    .form-container {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    / Step Header /
+    .step-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .step-header h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-header p {
+      color: var(--text-muted);
+    }
+
+    / Form Groups /
+    .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 1rem 1rem 1rem 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      transition: all var(--transition);
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+    }
+
+    / Floating Labels /
+    .form-group label {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      font-size: 1rem;
+      color: var(--text-muted);
+      pointer-events: none;
+      transition: all var(--transition);
+      background: var(--bg);
+      padding: 0 0.25rem;
+    }
+
+    .form-group input:focus ~ label,
+    .form-group input:not(:placeholder-shown) ~ label,
+    .form-group textarea:focus ~ label,
+    .form-group textarea:not(:placeholder-shown) ~ label,
+    .form-group select:focus ~ label,
+    .form-group select:valid ~ label {
+      top: -0.6rem;
+      left: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    / Service Cards /
+    .service-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 500px) {
+      .service-options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .service-card {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-align: center;
+    }
+
+    .service-card:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .service-card.active {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, var(--bg) 0%, rgba(99, 102, 241, 0.05) 100%);
+    }
+
+    .service-card h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .service-card .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .service-card .price span {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    / Package Options /
+    .package-options {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .package-card {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .package-card:hover {
+      border-color: var(--primary-light);
+    }
+
+    .package-card.active {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, var(--bg) 0%, rgba(99, 102, 241, 0.05) 100%);
+    }
+
+    .package-info h4 {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .package-info p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .package-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    / Payment Methods /
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .payment-btn {
+      padding: 1rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .payment-btn:hover {
+      border-color: var(--primary-light);
+    }
+
+    .payment-btn.active {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, var(--bg) 0%, rgba(99, 102, 241, 0.05) 100%);
+    }
+
+    / UPI Section /
+    .upi-section {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .upi-id {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--bg-secondary);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .upi-id code {
+      flex: 1;
+      font-family: 'IBM Plex Sans Arabic', monospace;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .copy-btn {
+      padding: 0.5rem 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all var(--transition);
+    }
+
+    .copy-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    / Buttons /
+    .btn {
+      width: 100%;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-muted);
+    }
+
+    / Success Message /
+    .success-message {
+      text-align: center;
+      padding: 2rem;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .success-message .icon {
+      width: 80px;
+      height: 80px;
+      background: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .success-message .icon svg {
+      width: 40px;
+      height: 40px;
+      fill: white;
+    }
+
+    .success-message h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .success-message p {
+      color: var(--text-muted);
+    }
+
+    .success-message .blessing {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-style: italic;
+      color: var(--primary);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    / Hidden utility /
+    .hidden {
+      display: none !important;
+    }
+
+    / Footer */
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zM12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+  </button>
 
-    <nav>
-        <div class="logo">Concept<span>toCode</span></div>
-        <div class="theme">
-            <button id="theme-toggle" class="theme-toggle">🌙</button>
+  <div class="container">
+    <!-- Glow Effect -->
+    <div class="effect"><span></span></div>
+
+    <!-- Header -->
+    <header>
+      <h1 class="logo">Concept to Code</h1>
+      <p class="tagline">Transform your ideas into powerful web experiences</p>
+    </header>
+
+    <!-- Form Container -->
+    <div class="form-container">
+      <!-- Step 1: Initial -->
+      <div id="step-initial">
+        <div class="step-header">
+          <h2>How can we help?</h2>
+          <p>Select the service that fits your needs</p>
         </div>
-    </nav>
 
-    <section class="form-container">
-        <form id="mainForm" action="https://formspree.io/f/mojyeyrp" method="POST">
-            
-            <input type="hidden" name="_subject" value="New Project Inquiry - ConcepttoCode">
-            <input type="hidden" name="Calculated Final Price" id="formspreeTotal" value="">
+        <form id="contact-form">
+          <div class="form-group">
+            <input type="text" id="name" name="name" placeholder=" " required>
+            <label for="name">Your Name</label>
+          </div>
 
+          <div class="form-group">
+            <input type="email" id="email" name="email" placeholder=" " required>
+            <label for="email">Email Address</label>
+          </div>
 
-            <div id="step-1">
-    <h3 style="margin-bottom: 15px;">Step 1: Project Details</h3>
-    
-    <div class="option-toggle">
-        <label class="toggle-btn">
-            <input type="radio" name="Project Scope" value="Optimize Existing" checked onclick="toggleOption('quick')"> 
-            <span>Optimize Existing</span>
-        </label>
-        <label class="toggle-btn">
-            <input type="radio" name="Project Scope" value="Build New" onclick="toggleOption('custom')"> 
-            <span>Build New</span>
-        </label>
-    </div> 
+          <div class="form-group">
+            <input type="url" id="website" name="website" placeholder=" ">
+            <label for="website">Website URL (if applicable)</label>
+          </div>
 
-    <div id="quick-fields">
-        <div class="input-group">
-            <input type="url" id="siteUrl" name="Current Website URL" placeholder=" " class="input-field">
-            <label>Current Website URL</label>
-        </div>
-    </div>
-
-    <div id="custom-fields" class="hidden">
-        <div class="input-group">
-            <input type="text" id="personName" name="Client Name" placeholder=" " class="input-field">
-            <label>Your Name</label>
-        </div>
-        <div class="input-group">
-            <textarea id="webDesc" name="Project Goals" placeholder=" " rows="4" class="input-field"></textarea>
-            <label>Project Goals</label>
-        </div>
-    </div>
-
-    <div class="input-group">
-        <input type="email" id="userEmail" name="Client Email" placeholder=" " class="input-field" required>
-        <label>Email Address</label>
-    </div>
-    
-    <div class="chip-container">
-        <button type="button" class="chip" onclick="quickFill('@gmail.com')">@gmail.com</button>
-        <button type="button" class="chip" onclick="quickFill('@')">@</button>
-        <button type="button" class="chip" onclick="quickFill('.com')">.com</button>
-    </div>
-
-    <div class="input-group">
-        <input type="text" id="promoCode" name="Promo Code Applied" placeholder=" " class="input-field">
-        <label>Discount Code (Optional)</label>
-    </div>
-
-    <select id="package" name="Selected Package" class="input-field" style="margin-bottom: 20px;" onchange="updatePackageDescription()">
-        <optgroup label="Optimize Existing Sites">
-            <option value="25" class="audit-price" data-desc="HTML and CSS: 70% to 85% improvement! 100% redesign.">HTML & CSS Optimization ($25)</option>
-            <option value="99" class="audit-price" data-desc="WordPress: 60%-70% redesign based on existing themes.">WordPress Optimization ($99)</option>
-        </optgroup>
-        <optgroup label="Build from Scratch">
-            <option value="200" class="dev-price hidden" hidden disabled data-desc="Custom Landing Page built from scratch with HTML, CSS, and JS.">Landing Page Build ($200)</option>
-            <option value="500" class="dev-price hidden" hidden disabled data-desc="Multi-page business site built exactly to your brand.">Business Website ($500)</option>
-            <option value="1000" class="dev-price hidden" hidden disabled data-desc="Advanced enterprise solutions and major structural overhauls.">Enterprise Solution ($1,000)</option>
-        </optgroup>
-    </select>
-
-    <div id="package-desc" class="package-description hidden"></div>
-
-    <div class="option-toggle" style="margin-top: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.03);">
-        <label class="toggle-btn">
-            <input type="radio" name="currency" value="USD" checked>
-            <span>$ USD (PayPal)</span>
-        </label>
-        <label class="toggle-btn inr" aria-disabled="true">
-            <input type="radio" name="currency" value="INR">
-            <span>₹ INR (UPI)</span>
-        </label>
-    </div>
-    
-    <button type="button" class="btn-main" onclick="expandForm()">Continue to Checkout</button>
-</div>
-
-            <div id="step-2" class="hidden">
-                <div id="payment-area"></div>
-                <button type="button" class="btn-cancel" onclick="cancelCheckout()">✖ Edit Details</button>
+          <div class="service-options">
+            <div class="service-card" onclick="selectService('optimize')">
+              <h3>🚀 Optimize Existing</h3>
+              <p>Speed boost & redesign for HTML, CSS, or WordPress</p>
+              <div class="price">From $25</div>
             </div>
+            <div class="service-card" onclick="selectService('scratch')">
+              <h3>🛠️ Build from Scratch</h3>
+              <p>Custom development tailored to your vision</p>
+              <div class="price">Custom <span>quote</span></div>
+            </div>
+          </div>
         </form>
-    </section>
+      </div>
 
+      <!-- Step 2: Optimize -->
+      <div id="step-optimize" class="hidden">
+        <div class="step-header">
+          <h2>Choose Your Package</h2>
+          <p>Select the optimization level you need</p>
+        </div>
+
+        <div class="package-options">
+          <div class="package-card" onclick="selectPackage(25, 'Speed Optimization')">
+            <div class="package-info">
+              <h4>⚡ Speed Optimization</h4>
+              <p>Performance tuning, caching, image optimization</p>
+            </div>
+            <div class="package-price">$25</div>
+          </div>
+          <div class="package-card" onclick="selectPackage(99, 'Full Redesign')">
+            <div class="package-info">
+              <h4>✨ Full Redesign</h4>
+              <p>Complete visual overhaul + speed optimization</p>
+            </div>
+            <div class="package-price">$99</div>
+          </div>
+        </div>
+
+        <div id="payment-section" class="hidden">
+          <p style="margin-bottom: 1rem; font-weight: 500;">Select payment method:</p>
+          <div class="payment-methods">
+            <button type="button" class="payment-btn" onclick="selectPayment('paypal')">💳 PayPal</button>
+            <button type="button" class="payment-btn" onclick="selectPayment('upi')">🇮🇳 UPI</button>
+          </div>
+
+          <div id="upi-details" class="hidden">
+            <div class="upi-section">
+              <p style="margin-bottom: 0.75rem;">Send payment to:</p>
+              <div class="upi-id">
+                <code id="upi-code">talentedtechguy@upi</code>
+                <button type="button" class="copy-btn" onclick="copyUPI()">Copy</button>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <input type="text" id="utr" name="utr" placeholder=" " pattern="[0-9]{12}" maxlength="12">
+                <label for="utr">12-digit UTR/Reference Number</label>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="proceed-btn" onclick="proceedPayment()">
+            Proceed to Payment
+          </button>
+        </div>
+
+        <button type="button" class="btn btn-secondary" onclick="goBack()">← Back</button>
+      </div>
+
+      <!-- Step 3: Scratch -->
+      <div id="step-scratch" class="hidden">
+        <div class="step-header">
+          <h2>Tell Us About Your Project</h2>
+          <p>Share your vision and we'll craft a custom quote</p>
+        </div>
+
+        <form id="scratch-form" onsubmit="submitScratchForm(event)">
+          <input type="hidden" name="accesskey" value="YOURWEB3FORMSKEY">
+          <input type="hidden" name="subject" value="New Custom Project Inquiry - Concept to Code">
+          <input type="hidden" name="fromname" value="Concept to Code Website">
+          <input type="hidden" id="scratch-name" name="clientname">
+          <input type="hidden" id="scratch-email" name="clientemail">
+          <input type="hidden" id="scratch-website" name="clientwebsite">
+
+          <div class="form-group">
+            <textarea id="project-brief" name="projectbrief" placeholder=" " required></textarea>
+            <label for="project-brief">Project Brief</label>
+          </div>
+
+          <div class="form-group">
+            <input type="text" id="budget" name="budget" placeholder=" ">
+            <label for="budget">Budget Range (optional)</label>
+          </div>
+
+          <div class="form-group">
+            <input type="text" id="timeline" name="timeline" placeholder=" ">
+            <label for="timeline">Preferred Timeline (optional)</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit Inquiry</button>
+        </form>
+
+        <button type="button" class="btn btn-secondary" onclick="goBack()">← Back</button>
+      </div>
+
+      <!-- Step 4: Success -->
+      <div id="step-success" class="hidden">
+        <div class="success-message">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          </div>
+          <h2>Submission Received!</h2>
+          <p>We'll review your request and get back to you within 24 hours.</p>
+          <p class="blessing">In Sha Allah, we look forward to working with you.</p>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">Submit Another Request</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2024 <a href="https://ctocweb.com/">Concept to Code</a>. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Theme Management
+    function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    initTheme();
+
+    // State
+    let selectedService = null;
+    let selectedPackage = null;
+    let selectedPaymentMethod = null;
+
+    // Service Selection
+    function selectService(type) {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!name || !email) {
+        alert('Please enter your name and email first.');
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      selectedService = type;
+      
+      document.querySelectorAll('.service-card').forEach(card => card.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      setTimeout(() => {
+        document.getElementById('step-initial').classList.add('hidden');
+        
+        if (type === 'optimize') {
+          document.getElementById('step-optimize').classList.remove('hidden');
+        } else {
+          document.getElementById('scratch-name').value = name;
+          document.getElementById('scratch-email').value = email;
+          document.getElementById('scratch-website').value = document.getElementById('website').value;
+          document.getElementById('step-scratch').classList.remove('hidden');
+        }
+      }, 200);
+    }
+
+    // Package Selection
+    function selectPackage(price, packageName) {
+      selectedPackage = { price, name: packageName };
+      
+      document.querySelectorAll('.package-card').forEach(card => card.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      
+      document.getElementById('payment-section').classList.remove('hidden');
+      updateProceedButton();
+    }
+
+    // Payment Method Selection
+    function selectPayment(method) {
+      selectedPaymentMethod = method;
+      
+      document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      
+      if (method === 'upi') {
+        document.getElementById('upi-details').classList.remove('hidden');
+      } else {
+        document.getElementById('upi-details').classList.add('hidden');
+      }
+      
+      updateProceedButton();
+    }
+
+    function updateProceedButton() {
+      const btn = document.getElementById('proceed-btn');
+      if (selectedPaymentMethod === 'paypal') {
+        btn.textContent = Pay $${selectedPackage.price} with PayPal;
+      } else if (selectedPaymentMethod === 'upi') {
+        btn.textContent = 'Verify & Submit';
+      } else {
+        btn.textContent = 'Proceed to Payment';
+      }
+    }
+
+    // Payment Processing
+    function proceedPayment() {
+      if (!selectedPackage || !selectedPaymentMethod) {
+        alert('Please select a package and payment method.');
+        return;
+      }
+
+      if (selectedPaymentMethod === 'paypal') {
+        window.open(https://www.paypal.me/talentedtechguy/${selectedPackage.price}, 'blank');
+        submitOptimizeForm('PayPal', 'Pending verification');
+      } else if (selectedPaymentMethod === 'upi') {
+        const utr = document.getElementById('utr').value.trim();
+        if (!utr || utr.length !== 12 || !/^\d{12}$/.test(utr)) {
+          alert('Please enter a valid 12-digit UTR/Reference number.');
+          return;
+        }
+        submitOptimizeForm('UPI', utr);
+      }
+    }
+
+    // Form Submissions
+    function submitOptimizeForm(paymentMethod, transactionRef) {
+      const formData = {
+        accesskey: 'YOURWEB3FORMSKEY',
+        subject: New ${selectedPackage.name} Order - Concept to Code,
+        fromname: 'Concept to Code Website',
+        clientname: document.getElementById('name').value,
+        clientemail: document.getElementById('email').value,
+        clientwebsite: document.getElementById('website').value || 'Not provided',
+        package: selectedPackage.name,
+        price: $${selectedPackage.price},
+        paymentmethod: paymentMethod,
+        transactionreference: transactionRef
+      };
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showSuccess();
+        } else {
+          alert('Submission failed. Please try again.');
+        }
+      })
+      .catch(() => {
+        alert('Network error. Please check your connection and try again.');
+      });
+    }
+
+    function submitScratchForm(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const formData = new FormData(form);
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showSuccess();
+        } else {
+          alert('Submission failed. Please try again.');
+        }
+      })
+      .catch(() => {
+        alert('Network error. Please check your connection and try again.');
+      });
+    }
+
+    // UI Helpers
+    function showSuccess() {
+      document.getElementById('step-optimize').classList.add('hidden');
+      document.getElementById('step-scratch').classList.add('hidden');
+      document.getElementById('step-success').classList.remove('hidden');
+    }
+
+    function goBack() {
+      document.getElementById('step-optimize').classList.add('hidden');
+      document.getElementById('step-scratch').classList.add('hidden');
+      document.getElementById('step-initial').classList.remove('hidden');
+      
+      // Reset selections
+      selectedPackage = null;
+      selectedPaymentMethod = null;
+      document.querySelectorAll('.package-card, .payment-btn, .service-card').forEach(el => el.classList.remove('active'));
+      document.getElementById('payment-section').classList.add('hidden');
+      document.getElementById('upi-details').classList.add('hidden');
+      document.getElementById('utr').value = '';
+    }
+
+    function resetForm() {
+      document.getElementById('step-success').classList.add('hidden');
+      document.getElementById('step-initial').classList.remove('hidden');
+      
+      // Clear all form data
+      document.getElementById('contact-form').reset();
+      document.getElementById('scratch-form').reset();
+      selectedService = null;
+      selectedPackage = null;
+      selectedPaymentMethod = null;
+      document.querySelectorAll('.service-card').forEach(card => card.classList.remove('active'));
+    }
+
+    function copyUPI() {
+      const upiId = document.getElementById('upi-code').textContent;
+      navigator.clipboard.writeText(upiId).then(() => {
+        const btn = event.currentTarget;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+  </script>
 </body>
 </html>
